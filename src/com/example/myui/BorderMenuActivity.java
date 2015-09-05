@@ -22,7 +22,7 @@ import java.util.HashMap;
 
 public abstract class BorderMenuActivity extends FragmentActivity {
 
-    final static long ANIMATION_DURATION  = 300;
+    final static long ANIMATION_DURATION  = 500;
 
     LinearLayout topContainer;
     LinearLayout leftContainer;
@@ -101,84 +101,49 @@ public abstract class BorderMenuActivity extends FragmentActivity {
 
     private final float centerRotateAnimation = Utils.dpToPx(56, getResources()) / 2; //?
 
-    private void animateIcon(int x, int y) {
-        RotateAnimation rotateAnimation = new RotateAnimation(x,y,centerRotateAnimation,centerRotateAnimation);
-        rotateAnimation.setInterpolator(new AccelerateInterpolator());
-        rotateAnimation.setDuration(ANIMATION_DURATION);
-        rotateAnimation.setFillAfter(true);
-        rotateAnimation.setAnimationListener(new Animation.AnimationListener() {
-
-            @Override
-            public void onAnimationStart(Animation arg0) {}
-
-            @Override
-            public void onAnimationRepeat(Animation arg0) {}
-
-            @Override
-            public void onAnimationEnd(Animation arg0) {
-                if(!topItems.isEmpty())
-                    topItems.get(0).show();
-                if(!leftItems.isEmpty())
-                    leftItems.get(0).show();
-            }
-        });
-        imageCenter.startAnimation(rotateAnimationCenter);
-    }
-
-    public void showMenu(){
-
-        // Animate icon button
-
-        RotateAnimation rotateAnimationCenter = new RotateAnimation(0,225,centerRotateAnimation,centerRotateAnimation);
-        rotateAnimationCenter.setInterpolator(new AccelerateInterpolator());
-        rotateAnimationCenter.setDuration(ANIMATION_DURATION);
-        rotateAnimationCenter.setFillAfter(true);
+    private void animateIcon() {
+        RotateAnimation rotateAnimationCenter = setAnimation(0, 225);
         rotateAnimationCenter.setAnimationListener(new Animation.AnimationListener() {
 
             @Override
-            public void onAnimationStart(Animation arg0) {}
+            public void onAnimationStart(Animation arg0) {
+            }
 
             @Override
-            public void onAnimationRepeat(Animation arg0) {}
+            public void onAnimationRepeat(Animation arg0) {
+            }
 
             @Override
             public void onAnimationEnd(Animation arg0) {
-                if(!topItems.isEmpty())
+                if (!topItems.isEmpty())
                     topItems.get(0).show();
-                if(!leftItems.isEmpty())
+                if (!leftItems.isEmpty())
                     leftItems.get(0).show();
             }
         });
         imageCenter.startAnimation(rotateAnimationCenter);
 
-        RotateAnimation rotateAnimationTop = new RotateAnimation(0,120,centerRotateAnimation,centerRotateAnimation);
-        rotateAnimationTop.setInterpolator(new AccelerateInterpolator());
-        rotateAnimationTop.setDuration(ANIMATION_DURATION/2);
-        rotateAnimationTop.setFillAfter(true);
+        RotateAnimation rotateAnimationTop = setAnimation(0, 120);
         rotateAnimationTop.setAnimationListener(new Animation.AnimationListener() {
 
             @Override
-            public void onAnimationStart(Animation arg0) {}
+            public void onAnimationStart(Animation arg0) {
+            }
 
             @Override
-            public void onAnimationRepeat(Animation arg0) {}
+            public void onAnimationRepeat(Animation arg0) {
+            }
 
             @Override
             public void onAnimationEnd(Animation arg0) {
-                RotateAnimation rotateAnimationTop = new RotateAnimation(120,245,centerRotateAnimation,centerRotateAnimation);
-                rotateAnimationTop.setInterpolator(new AccelerateInterpolator());
-                rotateAnimationTop.setDuration(ANIMATION_DURATION/2);
-                rotateAnimationTop.setFillAfter(true);
-                imageTop.setImageDrawable(icon_menu_top_short);
+                RotateAnimation rotateAnimationTop = setAnimation(120, 245);
+                imageTop.setImageDrawable(menuIconTop);
                 imageTop.startAnimation(rotateAnimationTop);
             }
         });
         imageTop.startAnimation(rotateAnimationTop);
 
-        RotateAnimation rotateAnimationBottom = new RotateAnimation(0,100,centerRotateAnimation,centerRotateAnimation);
-        rotateAnimationBottom.setInterpolator(new AccelerateInterpolator());
-        rotateAnimationBottom.setDuration(ANIMATION_DURATION/2);
-        rotateAnimationBottom.setFillAfter(true);
+        RotateAnimation rotateAnimationBottom = setAnimation(0, 100);
         rotateAnimationBottom.setAnimationListener(new Animation.AnimationListener() {
 
             @Override
@@ -189,15 +154,26 @@ public abstract class BorderMenuActivity extends FragmentActivity {
 
             @Override
             public void onAnimationEnd(Animation arg0) {
-                RotateAnimation rotateAnimationBottom = new RotateAnimation(100,195,centerRotateAnimation,centerRotateAnimation);
-                rotateAnimationBottom.setInterpolator(new AccelerateInterpolator());
-                rotateAnimationBottom.setDuration(ANIMATION_DURATION/2);
-                rotateAnimationBottom.setFillAfter(true);
-                imageBottom.setImageDrawable(icon_menu_bottom_short);
+                RotateAnimation rotateAnimationBottom = setAnimation(100, 195);
+                imageBottom.setImageDrawable(menuIconBottom);
                 imageBottom.startAnimation(rotateAnimationBottom);
             }
         });
         imageBottom.startAnimation(rotateAnimationBottom);
+    }
+
+    private RotateAnimation setAnimation(int x, int y) {
+        RotateAnimation rotateAnimation = new RotateAnimation(x, y,
+                centerRotateAnimation, centerRotateAnimation);
+        rotateAnimation.setInterpolator(new AccelerateInterpolator());
+        rotateAnimation.setDuration(ANIMATION_DURATION);
+        rotateAnimation.setFillAfter(true);
+        return rotateAnimation;
+    }
+
+    public void showMenu(){
+        // Animate icon button
+        animateIcon();
 
         // show top menu
         ViewHelper.setX(topContainer, -topContainer.getWidth()+Utils.dpToPx(56, getResources()));
@@ -235,7 +211,7 @@ public abstract class BorderMenuActivity extends FragmentActivity {
         rotateAnimationCenter.setInterpolator(new AccelerateInterpolator());
         rotateAnimationCenter.setDuration(ANIMATION_DURATION);
         rotateAnimationCenter.setFillAfter(true);
-        icn_menu_center.startAnimation(rotateAnimationCenter);
+        imageCenter.startAnimation(rotateAnimationCenter);
 
         RotateAnimation rotateAnimationTop = new RotateAnimation(245,120,centerRotateAnimation,centerRotateAnimation);
         rotateAnimationTop.setInterpolator(new AccelerateInterpolator());
@@ -279,11 +255,11 @@ public abstract class BorderMenuActivity extends FragmentActivity {
                 rotateAnimationBottom.setInterpolator(new AccelerateInterpolator());
                 rotateAnimationBottom.setDuration(ANIMATION_DURATION/2);
                 rotateAnimationBottom.setFillAfter(true);
-                icn_menu_bottom.setImageDrawable(icon_menu_bottom);
-                icn_menu_bottom.startAnimation(rotateAnimationBottom);
+                imageBottom.setImageDrawable(icon_menu_bottom);
+                imageBottom.startAnimation(rotateAnimationBottom);
             }
         });
-        icn_menu_bottom.startAnimation(rotateAnimationBottom);
+        imageBottom.startAnimation(rotateAnimationBottom);
 
         // hide top menu
         float origin = ViewHelper.getX(topContainer);
